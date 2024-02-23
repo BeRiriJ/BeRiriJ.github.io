@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+    <meta name="description" content="Zhangyunjia&#39;s personal website">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+  <title>Langchain_learning_doc(Part_1) |  ZYJ</title>
+  
+    <link rel="apple-touch-icon" sizes="57x57" href="/images/webclip/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/images/webclip/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/images/webclip/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/images/webclip/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/webclip/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/images/webclip/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/images/webclip/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/webclip/apple-touch-icon-180x180.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="/images/webclip/apple-touch-icon-167x167.png">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  <main class="main">
+    
+	<header id="header" class="header">
+
+	<div class="container">
+		<nav class="navbar d-flex align-items-center">
+			<a class="brand" href="/">
+				<img class="logo lazyload" data-src="/images/brand.png" alt="ZYJ" role="img">
+			</a>
+			<ul class="main-nav">
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/">首页</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/archives">博客</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/about">关于</a>
+  </li>
+  
+</ul>
+		</nav>
+		<a id="mobile-nav-toggle">
+			<span class="mobile-nav-toggle-bar"></span>
+			<span class="mobile-nav-toggle-bar"></span>
+			<span class="mobile-nav-toggle-bar"></span>
+		</a>
+	</div>
+</header>
+
+    <section>
+      <div class="container">
+  <article id="post-Langchain_learning_doc(Part_1)" class="article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  
+  <div class="article-cover mb-5">
+    
+  </div>
+  
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+      
+  
+    <h1 class="article-title" itemprop="name">
+      Langchain_learning_doc(Part_1)
+    </h1>
+  
+
+      <div class="article-meta">
+        <time class="text-gray" datetime="2024-02-22T16:00:00.000Z" itemprop="datePublished">
+  2024-02-23
+</time>
+        
+      </div>
+      
+    </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      <h1 id="Langchain"><a href="#Langchain" class="headerlink" title="Langchain"></a>Langchain</h1><ul>
+<li>采用ollma+llama2+faiss</li>
+</ul>
+<h3 id="安装环境问题"><a href="#安装环境问题" class="headerlink" title="安装环境问题"></a>安装环境问题</h3><ol>
+<li>无法pip安装：<ol>
+<li>网络问题</li>
+<li>package拼写问题 (eg. langchian-langchain)</li>
+<li>没有进入特定的conda环境（eg. pytorch）</li>
+</ol>
+</li>
+<li>下载模型后ollama需要重启</li>
+<li>在langchain官方文档get started中（<a target="_blank" rel="noopener" href="https://python.langchain.com/docs/get_started/quickstart%EF%BC%89">https://python.langchain.com/docs/get_started/quickstart）</a> 点击local就可以看到ollama的文档，不用自己去intergrate里找lmm里的ollama</li>
+</ol>
+<h2 id="1-from-import-py"><a href="#1-from-import-py" class="headerlink" title="1. from_import.py"></a>1. from_import.py</h2><ul>
+<li><p>参考 <a target="_blank" rel="noopener" href="https://python.langchain.com/docs/get_started/quickstart">https://python.langchain.com/docs/get_started/quickstart</a></p>
+</li>
+<li><p>测试ollama能不能正常工作</p>
+</li>
+<li><p>输出是stream(query)</p>
+</li>
+<li><p>langchain_community在python3.8时无法自动通过pip install langchain下载，也无法单独下载langchain_community（官方文档说：下载langchain会自动下载langchain_community）在换成新的conda环境，python3.10版本后问题自动解决。可通过首先import langchain先测试是否langchain已经import成功</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1</span></span><br><span class="line"><span class="comment"># 测试ollama能不能工作</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># import langchain</span></span><br><span class="line"><span class="keyword">from</span> langchain_community.llms <span class="keyword">import</span> Ollama</span><br><span class="line"></span><br><span class="line">llm = Ollama(model=<span class="string">&quot;llama2&quot;</span>) <span class="comment"># 经测试 qwen也可以</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># llm.invoke(&quot;Tell me a joke&quot;)</span></span><br><span class="line"></span><br><span class="line">query = <span class="string">&quot;Tell me a joke&quot;</span></span><br><span class="line"><span class="keyword">for</span> chunks <span class="keyword">in</span> llm.stream(query):</span><br><span class="line">    <span class="built_in">print</span>(chunks)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><pre><code>输出：**
+
+**`Why`**
+ **`don`**
+**`&#39;t`**
+ **`scientists`**
+ **`trust`**
+ **`atoms`**
+**`?`**
+
+**`Because`**
+ **`they`**
+ **`make`**
+ **`up`**
+ **`everything`**
+.
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 2. quickStart.py</span><br><span class="line"></span><br><span class="line">- 参考 https://python.langchain.com/docs/get_started/quickstart</span><br><span class="line"></span><br><span class="line">- 需要安装beautiful soup 4（WebBaseLoader是基于bs）和矢量数据库 faiss（本地）</span><br><span class="line">- 从网络文档&quot;https://docs.smith.langchain.com&quot;读取后回答一个问题。</span><br><span class="line">- 只能回答一个问题</span><br><span class="line">- 改进：加入prompt模版，可以读取网络内容，加入矢量数据库faiss，</span><br><span class="line"></span><br><span class="line">```python</span><br><span class="line"># 2</span><br><span class="line"># 从网络的文档读取，回答LangSmith can help with</span><br><span class="line"># 只能回答一个问题 answer one single question</span><br><span class="line"></span><br><span class="line">from langchain_community.llms import Ollama</span><br><span class="line">from langchain_core.prompts import ChatPromptTemplate</span><br><span class="line"># from langchain_core.output_parsers import StrOutputParser</span><br><span class="line">from langchain_community.document_loaders import WebBaseLoader</span><br><span class="line">from langchain_community.embeddings import OllamaEmbeddings</span><br><span class="line">from langchain_community.vectorstores import FAISS</span><br><span class="line">from langchain.text_splitter import RecursiveCharacterTextSplitter</span><br><span class="line">from langchain.chains.combine_documents import create_stuff_documents_chain</span><br><span class="line"># from langchain_core.documents import Document</span><br><span class="line">from langchain.chains import create_retrieval_chain</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># from_import</span><br><span class="line">llm = Ollama(model=&quot;llama2&quot;)</span><br><span class="line"># llm.invoke(&quot;how can langsmith help with testing?&quot;)</span><br><span class="line"></span><br><span class="line"># prompt</span><br><span class="line">prompt = ChatPromptTemplate.from_messages([</span><br><span class="line">    (&quot;system&quot;, &quot;You are world class technical documentation writer.&quot;),</span><br><span class="line">    (&quot;user&quot;, &quot;&#123;input&#125;&quot;)</span><br><span class="line">])</span><br><span class="line">#</span><br><span class="line"># chain = prompt | llm</span><br><span class="line"># chain.invoke(&#123;&quot;input&quot;: &quot;how can langsmith help with testing?&quot;&#125;)</span><br><span class="line"># output_parser = StrOutputParser()</span><br><span class="line"># chain = prompt | llm | output_parser</span><br><span class="line"># chain.invoke(&#123;&quot;input&quot;: &quot;how can langsmith help with testing?&quot;&#125;)</span><br><span class="line"></span><br><span class="line"># 装了beautiful soup 4</span><br><span class="line">loader = WebBaseLoader(&quot;https://docs.smith.langchain.com&quot;)</span><br><span class="line">docs = loader.load()</span><br><span class="line"></span><br><span class="line"># retrieval chain</span><br><span class="line">embeddings = OllamaEmbeddings()</span><br><span class="line"></span><br><span class="line"># 下载矢量数据库 faiss</span><br><span class="line">text_splitter = RecursiveCharacterTextSplitter()</span><br><span class="line">documents = text_splitter.split_documents(docs)</span><br><span class="line">vector = FAISS.from_documents(documents, embeddings)</span><br><span class="line">prompt = ChatPromptTemplate.from_template(&quot;&quot;&quot;Answer the following question based only on the provided context:</span><br><span class="line"></span><br><span class="line">&lt;context&gt;</span><br><span class="line">&#123;context&#125;</span><br><span class="line">&lt;/context&gt;</span><br><span class="line"></span><br><span class="line">Question: &#123;input&#125;&quot;&quot;&quot;)</span><br><span class="line"></span><br><span class="line">document_chain = create_stuff_documents_chain(llm, prompt)</span><br><span class="line"></span><br><span class="line"># pass in documents directly</span><br><span class="line"># document_chain.invoke(&#123;</span><br><span class="line">#     &quot;input&quot;: &quot;how can langsmith help with testing?&quot;,</span><br><span class="line">#     &quot;context&quot;: [Document(page_content=&quot;langsmith can let you visualize test results&quot;)]</span><br><span class="line"># &#125;)</span><br><span class="line">retriever = vector.as_retriever()</span><br><span class="line">retrieval_chain = create_retrieval_chain(retriever, document_chain)</span><br><span class="line">response = retrieval_chain.invoke(&#123;&quot;input&quot;: &quot;how can langsmith help with testing?&quot;&#125;)</span><br><span class="line">print(response[&quot;answer&quot;])</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ul>
+<p>llama2的回答：</p>
+<ol>
+<li><pre><code>**`**According to the provided context, LangSmith can help with testing in several ways:`****
+
+1. **`Evaluation: LangSmith provides an evaluation capability that allows users to evaluate their LLM applications before deploying them. This helps identify any issues or bugs in the application before it goes live.`**
+2. **`Tracing: The tracing feature of LangSmith enables users to track and monitor the performance of their LLM applications in real-time. This can help identify bottlenecks, performance issues, and other problems that may arise during testing.`**
+3. **`Debugging: LangSmith&#39;s debugging capabilities allow users to debug their LLM applications more efficiently. Users can use the platform to set breakpoints, inspect variables, and step through their code, making it easier to identify and fix errors.`**
+4. ****`Testing frameworks integration: LangSmith integrates with popular testing frameworks like Pytest and Jest, allowing users to write and run tests for their LLM applications directly within the platform. This makes it easier to test and validate the functionality of the application.**`**
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 3. conversation_retrieval_chain.py</span><br><span class="line"></span><br><span class="line">- 参考 https://python.langchain.com/docs/get_started/quickstart</span><br><span class="line"></span><br><span class="line">- 与2. quickStart.py相比，3. conversation_retrieval_chain.py的回答的第二个问题可以与上一个问题联系起来（eg. 第一个问题：What is xxx? ；第一个回答：yyy；第二个问题：Tell me how？可以不用用写宾语）。</span><br><span class="line">- 为了达到这个目标，更换了新chain。</span><br><span class="line"></span><br><span class="line">```Py</span><br><span class="line"># 3. conversation_retrieval_chain.py</span><br><span class="line">from langchain_community.llms import Ollama</span><br><span class="line">from langchain_core.prompts import ChatPromptTemplate</span><br><span class="line">from langchain_community.document_loaders import WebBaseLoader</span><br><span class="line">from langchain_community.embeddings import OllamaEmbeddings</span><br><span class="line">from langchain_community.vectorstores import FAISS</span><br><span class="line">from langchain.text_splitter import RecursiveCharacterTextSplitter</span><br><span class="line">from langchain.chains.combine_documents import create_stuff_documents_chain</span><br><span class="line">from langchain.chains import create_retrieval_chain</span><br><span class="line">from langchain.chains import create_history_aware_retriever</span><br><span class="line">from langchain_core.prompts import MessagesPlaceholder</span><br><span class="line">from langchain_core.messages import HumanMessage, AIMessage</span><br><span class="line"></span><br><span class="line"># from_import</span><br><span class="line">llm = Ollama(model=&quot;llama2&quot;)</span><br><span class="line"></span><br><span class="line"># prompt</span><br><span class="line">prompt = ChatPromptTemplate.from_messages([</span><br><span class="line">    (&quot;system&quot;, &quot;You are world class technical documentation writer.&quot;),</span><br><span class="line">    (&quot;user&quot;, &quot;&#123;input&#125;&quot;)</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line"># 装了beautiful soup 4</span><br><span class="line">loader = WebBaseLoader(&quot;https://docs.smith.langchain.com&quot;)</span><br><span class="line">docs = loader.load()</span><br><span class="line"></span><br><span class="line"># retrieval chain</span><br><span class="line">embeddings = OllamaEmbeddings()</span><br><span class="line"></span><br><span class="line"># 下载矢量数据库 faiss</span><br><span class="line">text_splitter = RecursiveCharacterTextSplitter()</span><br><span class="line">documents = text_splitter.split_documents(docs)</span><br><span class="line">vector = FAISS.from_documents(documents, embeddings)</span><br><span class="line"></span><br><span class="line"># prompt</span><br><span class="line"># prompt = ChatPromptTemplate.from_messages([</span><br><span class="line">#     MessagesPlaceholder(variable_name=&quot;chat_history&quot;),</span><br><span class="line">#     (&quot;user&quot;, &quot;&#123;input&#125;&quot;),</span><br><span class="line">#     (&quot;user&quot;, &quot;Given the above conversation, generate a search query to look up in order to get information relevant to the conversation&quot;)</span><br><span class="line"># ])</span><br><span class="line"></span><br><span class="line">prompt = ChatPromptTemplate.from_messages([</span><br><span class="line">    (&quot;system&quot;, &quot;Answer the user&#x27;s questions based on the below context:\n\n&#123;context&#125;&quot;),</span><br><span class="line">    MessagesPlaceholder(variable_name=&quot;chat_history&quot;),</span><br><span class="line">    (&quot;user&quot;, &quot;&#123;input&#125;&quot;),</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line">retriever = vector.as_retriever()</span><br><span class="line">retriever_chain = create_history_aware_retriever(llm, retriever, prompt)</span><br><span class="line">document_chain = create_stuff_documents_chain(llm, prompt)</span><br><span class="line">retrieval_chain = create_retrieval_chain(retriever_chain, document_chain)</span><br><span class="line"></span><br><span class="line">chat_history = [HumanMessage(content=&quot;Can LangSmith help test my LLM applications?&quot;), AIMessage(content=&quot;Yes!&quot;)]</span><br><span class="line">response = retrieval_chain.invoke(&#123;</span><br><span class="line">    &quot;chat_history&quot;: chat_history,</span><br><span class="line">    &quot;input&quot;: &quot;Tell me how&quot;,</span><br><span class="line">    &quot;context&quot;: document_chain  # 比官方文档加了这一行</span><br><span class="line">&#125;)</span><br><span class="line">print(response[&quot;answer&quot;])</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ol>
+<p>最后的response中与官方文档不同：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">response = retrieval_chain.invoke(&#123;</span><br><span class="line">    <span class="string">&quot;chat_history&quot;</span>: chat_history,</span><br><span class="line">    <span class="string">&quot;input&quot;</span>: <span class="string">&quot;Tell me how&quot;</span>,</span><br><span class="line">    <span class="string">&quot;context&quot;</span>: document_chain  <span class="comment"># 比官方文档加了这一行</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>如果不加 <code>&quot;context&quot;: document_chain</code>就报错：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">KeyError: &quot;Input to ChatPromptTemplate is missing variables &#123;&#x27;context&#x27;&#125;.  Expected: [&#x27;chat_history&#x27;, &#x27;context&#x27;, &#x27;input&#x27;] Received: [&#x27;chat_history&#x27;, &#x27;input&#x27;]&quot;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>输出：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Of course! LangSmith provides a robust testing framework for LLM applications. Here&#x27;s how you can leverage LangSmith to test your LLM apps:</span><br><span class="line"></span><br><span class="line">1. **Set up your testing environment**: LangSmith offers a quick start guide to help you set up your testing environment. You can follow the guidelines in the user guide to create a testing environment that suits your needs.</span><br><span class="line">2. **Use LangChain&#x27;s built-in testing tools**: LangChain provides several testing tools, such as `langchain test` and `langchain evaluate`, which you can use to test your LLM applications. These tools allow you to write test cases, run tests, and evaluate the performance of your LLM models.</span><br><span class="line">3. **Integrate with other testing frameworks**: LangSmith is designed to work seamlessly with other testing frameworks, such as Pytest and Unittest. You can integrate these frameworks with LangChain&#x27;s built-in testing tools to create a comprehensive testing suite for your LLM applications.</span><br><span class="line">4. **Use the Prompt Hub**: The Prompt Hub is a feature of LangSmith that allows you to manage and organize prompts for your LLM models. You can use the Prompt Hub to create, edit, and deploy prompts for your tests, making it easier to test and evaluate your LLM applications.</span><br><span class="line">5. **Monitor and evaluate performance**: LangSmith provides monitoring and evaluation capabilities that allow you to track the performance of your LLM models during testing. You can use these features to identify areas where your models need improvement and to optimize their performance.</span><br><span class="line"></span><br><span class="line">By leveraging LangSmith&#x27;s testing framework, you can ensure that your LLM applications are thoroughly tested and evaluated before deploying them in production environments.</span><br></pre></td></tr></table></figure>
+
+<p>到这部分为止 都是参考 <a target="_blank" rel="noopener" href="https://python.langchain.com/docs/get_started/quickstart">https://python.langchain.com/docs/get_started/quickstart</a> ，在Agent部分之前。agent里写道： **NOTE: for this example we will only show how to create an agent using OpenAI models, as local models are not reliable enough yet.**。因此，后续Agent, Serving with LangServe部分都与agnet有关。这部分暂时结束。</p>
+
+    </div>
+    <footer class="article-footer">
+      
+    </footer>
+  </div>
+  
+  
+    
+<nav class="article-nav pt-4 mt-3" id="article-nav">
+  
+  
+    <a href="/2024/02/11/Github-hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%BB%8F%E9%AA%8C/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">Github+hexo博客搭建经验</div>
+    </a>
+  
+</nav>
+
+
+  
+</article>
+</div>
+    </section>
+    <footer class="footer pt-5 mt-5">
+  <div class="container">
+    <div class="py-3">
+      <div class="row justify-content-between">
+        <div class="col-6">
+          <img class="filter-gray mb-3 lazyload" height="40" data-src="/images/brand.png" alt="ZYJ" role="img">
+          <p class="mb-4">Zhangyunjia&#39;s personal website</p>
+          <ul class="list-inline">
+            
+          </ul>
+        </div>
+        <div class="col-4">
+          <h5>友情链接</h5>
+          <ul class="list-inline">
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+    <hr class="hr" style="opacity: .25;">
+    <div class="pt-3 pb-5">
+      <ul class="list-inline mb-0 text-center">
+        <li class="list-inline-item">&copy; 2024 ZYJ</li>
+        
+        <li class="list-inline-item">Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+        <li class="list-inline-item">Designer <a href="https://acorn.imaging.xin/" target="_blank">Riri Zhang</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+  </main>
+  <div id="mobile-nav-dimmer"></div>
+<div id="mobile-nav">
+	<div id="mobile-nav-inner">
+		<ul class="mobile-nav">
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/">首页</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/archives">博客</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/about">关于</a>
+  </li>
+  
+</ul>
+		
+	</div>
+</div>
+
+  <script src="/libs/feather/feather.min.js"></script>
+<script src="/libs/lazysizes/lazysizes.min.js"></script>
+
+	<script src="/libs/tocbot/tocbot.min.js"></script>
+	<script>
+    tocbot.init({
+      // Where to render the table of contents.
+      tocSelector: '.js-toc',
+      // Where to grab the headings to build the table of contents.
+      contentSelector: '.js-toc-content',
+      // Which headings to grab inside of the contentSelector element.
+      headingSelector: 'h2, h3',
+      // For headings inside relative or absolute positioned containers within content.
+      hasInnerContainers: true,
+    });
+	</script>
+
+
+
+
+
+<script src="/js/mobile-nav.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+</body>
+</html>
